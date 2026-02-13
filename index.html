@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For Livia ❤️</title>
+
+<style>
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at center, #ff6ec7, #ff4e88, #c94b4b);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    overflow: hidden;
+    text-align: center;
+    animation: fadeInBody 2s ease forwards;
+}
+
+@keyframes fadeInBody {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+h1 {
+    font-size: 60px;
+    animation: zoomIn 2s ease forwards;
+}
+
+@keyframes zoomIn {
+    from {transform: scale(0.5); opacity:0;}
+    to {transform: scale(1); opacity:1;}
+}
+
+#typing {
+    font-size: 24px;
+    width: 75%;
+    max-width: 650px;
+    margin-top: 10px;
+    min-height: 60px;
+}
+
+.from {
+    margin-top: 15px;
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+button {
+    margin-top: 30px;
+    padding: 15px 35px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.yes {
+    background: white;
+    color: #ff4e88;
+}
+
+.no {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    position: relative;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+#hiddenMessage {
+    display: none;
+    margin-top: 30px;
+    font-size: 28px;
+    animation: dramaticReveal 2s ease forwards;
+}
+
+@keyframes dramaticReveal {
+    from {opacity:0; transform: scale(0.8);}
+    to {opacity:1; transform: scale(1);}
+}
+
+#countdown {
+    margin-top: 15px;
+    font-size: 18px;
+}
+
+.heart, .petal {
+    position: absolute;
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+    opacity: 0.8;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0.8; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+.sparkle {
+    position: absolute;
+    pointer-events: none;
+    font-size: 12px;
+    animation: sparkleFade 1s linear forwards;
+}
+
+@keyframes sparkleFade {
+    from {opacity:1;}
+    to {opacity:0;}
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Happy Valentine's Day, Livia ❤️</h1>
+
+<div id="typing"></div>
+
+<div class="from">From Nick 💌</div>
+
+<div id="countdown"></div>
+
+<button class="yes" onclick="sayYes()">Yes 💖</button>
+<button class="no" onmouseover="moveNo()">No 🙈</button>
+
+<div id="hiddenMessage">
+    You are my favourite person.
+    And I cannot wait for our 6th month on the 27th.
+    Here’s to us, always. ❤️
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="introSound">
+    <source src="intro.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* Start music after first click (mobile safe) */
+document.body.addEventListener("click", function() {
+    document.getElementById("bgMusic").play();
+    document.getElementById("introSound").play();
+}, { once: true });
+
+/* Typing animation */
+const text = "5 months with you has been my favourite chapter. You make everything brighter, softer, and better.";
+let i = 0;
+
+function typeWriter() {
+    if (i < text.length) {
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 35);
+    }
+}
+
+typeWriter();
+
+/* Yes button */
+function sayYes() {
+    document.getElementById("hiddenMessage").style.display = "block";
+}
+
+/* Runaway No button */
+function moveNo() {
+    const btn = document.querySelector(".no");
+    btn.style.position = "absolute";
+    btn.style.left = Math.random() * 80 + "%";
+    btn.style.top = Math.random() * 80 + "%";
+}
+
+/* Floating hearts & petals */
+function createFloating() {
+    const el = document.createElement("div");
+    el.classList.add(Math.random() > 0.5 ? "heart" : "petal");
+    el.innerHTML = Math.random() > 0.5 ? "❤️" : "🌹";
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.bottom = "-20px";
+    el.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(el);
+
+    setTimeout(() => {
+        el.remove();
+    }, 6000);
+}
+
+setInterval(createFloating, 400);
+
+/* Sparkle cursor trail */
+document.addEventListener("mousemove", function(e) {
+    const sparkle = document.createElement("div");
+    sparkle.classList.add("sparkle");
+    sparkle.innerHTML = "✨";
+    sparkle.style.left = e.pageX + "px";
+    sparkle.style.top = e.pageY + "px";
+    document.body.appendChild(sparkle);
+
+    setTimeout(() => {
+        sparkle.remove();
+    }, 1000);
+});
+
+/* Countdown */
+const targetDate = new Date("Feb 27, 2026 00:00:00").getTime();
+
+setInterval(function() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+    document.getElementById("countdown").innerHTML =
+        "Countdown to our 6th month: " + days + "d " + hours + "h " + minutes + "m";
+}, 1000);
+
+</script>
+
+</body>
+</html>
