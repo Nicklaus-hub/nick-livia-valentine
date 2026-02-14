@@ -139,21 +139,35 @@ button:hover {
     Here’s to us, always. ❤️
 </div>
 
-<audio id="bgMusic" loop>
+<audio id="bgMusic" loop preload="auto">
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<audio id="introSound">
-    <source src="intro.mp3" type="audio/mpeg">
-</audio>
-
 <script>
+let started = false;
 
-/* Start music after first click (mobile safe) */
-document.body.addEventListener("click", function() {
-    document.getElementById("bgMusic").play();
-    document.getElementById("introSound").play();
-}, { once: true });
+function startMusic() {
+    if (!started) {
+        const bg = document.getElementById("bgMusic");
+
+        bg.volume = 0;
+        bg.play();
+
+        // Fade in effect
+        let fade = setInterval(function () {
+            if (bg.volume < 0.5) {
+                bg.volume += 0.05;
+            } else {
+                clearInterval(fade);
+            }
+        }, 200);
+
+        started = true;
+    }
+}
+
+document.body.addEventListener("click", startMusic);
+
 
 /* Typing animation */
 const text = "5 months with you has been my favourite chapter. You make everything brighter, softer, and better.";
